@@ -1,0 +1,4 @@
+module gr_unipi.countriesApp {
+    requires javafx.controls;
+    exports gr_unipi.countriesApp;
+}

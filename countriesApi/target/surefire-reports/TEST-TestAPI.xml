@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="TestAPI" time="1.172" tests="1" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="21"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/Users/stathesarnaoutopoulos/Documents/new_java/countriesApi/target/test-classes:/Users/stathesarnaoutopoulos/Documents/new_java/countriesApi/target/classes:/Users/stathesarnaoutopoulos/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.12.1/jackson-databind-2.12.1.jar:/Users/stathesarnaoutopoulos/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.12.1/jackson-annotations-2.12.1.jar:/Users/stathesarnaoutopoulos/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.12.1/jackson-core-2.12.1.jar:/Users/stathesarnaoutopoulos/.m2/repository/junit/junit/4.11/junit-4.11.jar:/Users/stathesarnaoutopoulos/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/Users/stathesarnaoutopoulos/.m2/repository/org/apache/logging/log4j/log4j-core/2.14.0/log4j-core-2.14.0.jar:/Users/stathesarnaoutopoulos/.m2/repository/org/apache/logging/log4j/log4j-api/2.14.0/log4j-api-2.14.0.jar:/Users/stathesarnaoutopoulos/.m2/repository/org/apache/httpcomponents/httpclient/4.5.13/httpclient-4.5.13.jar:/Users/stathesarnaoutopoulos/.m2/repository/org/apache/httpcomponents/httpcore/4.4.13/httpcore-4.4.13.jar:/Users/stathesarnaoutopoulos/.m2/repository/commons-logging/commons-logging/1.2/commons-logging-1.2.jar:/Users/stathesarnaoutopoulos/.m2/repository/commons-codec/commons-codec/1.11/commons-codec-1.11.jar:"/>
+    <property name="java.vm.vendor" value="Homebrew"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.vendor.url" value="https://github.com/Homebrew/homebrew-core/issues"/>
+    <property name="os.name" value="Mac OS X"/>
+    <property name="java.vm.specification.version" value="21"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="GR"/>
+    <property name="sun.boot.library.path" value="/opt/homebrew/Cellar/openjdk/21.0.2/libexec/openjdk.jdk/Contents/Home/lib"/>
+    <property name="sun.java.command" value="/Users/stathesarnaoutopoulos/Documents/new_java/countriesApi/target/surefire/surefirebooter-20240214214230577_3.jar /Users/stathesarnaoutopoulos/Documents/new_java/countriesApi/target/surefire 2024-02-14T21-42-30_495-jvmRun1 surefire-20240214214230577_1tmp surefire_0-20240214214230577_2tmp"/>
+    <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="/Users/stathesarnaoutopoulos/Documents/new_java/countriesApi/target/test-classes:/Users/stathesarnaoutopoulos/Documents/new_java/countriesApi/target/classes:/Users/stathesarnaoutopoulos/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.12.1/jackson-databind-2.12.1.jar:/Users/stathesarnaoutopoulos/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.12.1/jackson-annotations-2.12.1.jar:/Users/stathesarnaoutopoulos/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.12.1/jackson-core-2.12.1.jar:/Users/stathesarnaoutopoulos/.m2/repository/junit/junit/4.11/junit-4.11.jar:/Users/stathesarnaoutopoulos/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/Users/stathesarnaoutopoulos/.m2/repository/org/apache/logging/log4j/log4j-core/2.14.0/log4j-core-2.14.0.jar:/Users/stathesarnaoutopoulos/.m2/repository/org/apache/logging/log4j/log4j-api/2.14.0/log4j-api-2.14.0.jar:/Users/stathesarnaoutopoulos/.m2/repository/org/apache/httpcomponents/httpclient/4.5.13/httpclient-4.5.13.jar:/Users/stathesarnaoutopoulos/.m2/repository/org/apache/httpcomponents/httpcore/4.4.13/httpcore-4.4.13.jar:/Users/stathesarnaoutopoulos/.m2/repository/commons-logging/commons-logging/1.2/commons-logging-1.2.jar:/Users/stathesarnaoutopoulos/.m2/repository/commons-codec/commons-codec/1.11/commons-codec-1.11.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/Users/stathesarnaoutopoulos"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2024-01-16"/>
+    <property name="java.home" value="/opt/homebrew/Cellar/openjdk/21.0.2/libexec/openjdk.jdk/Contents/Home"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="/Users/stathesarnaoutopoulos/Documents/new_java/countriesApi"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="apple.awt.application.name" value="ForkedBooter"/>
+    <property name="surefire.real.class.path" value="/Users/stathesarnaoutopoulos/Documents/new_java/countriesApi/target/surefire/surefirebooter-20240214214230577_3.jar"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="java.runtime.version" value="21.0.2"/>
+    <property name="user.name" value="stathesarnaoutopoulos"/>
+    <property name="stdout.encoding" value="UTF-8"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="14.2.1"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="java.vendor.version" value="Homebrew"/>
+    <property name="localRepository" value="/Users/stathesarnaoutopoulos/.m2/repository"/>
+    <property name="java.vendor.url.bug" value="https://github.com/Homebrew/homebrew-core/issues"/>
+    <property name="java.io.tmpdir" value="/var/folders/k8/wcfk2_mn55q8390ktrvkxk780000gn/T/"/>
+    <property name="java.version" value="21.0.2"/>
+    <property name="user.dir" value="/Users/stathesarnaoutopoulos/Documents/new_java/countriesApi"/>
+    <property name="os.arch" value="aarch64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="native.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/Users/stathesarnaoutopoulos/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="stderr.encoding" value="UTF-8"/>
+    <property name="java.vendor" value="Homebrew"/>
+    <property name="java.vm.version" value="21.0.2"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeBig"/>
+    <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="java.class.version" value="65.0"/>
+  </properties>
+  <testcase name="testSearchCountriesByCurrency" classname="TestAPI" time="1.15">
+    <system-out><![CDATA[Info{name='United States Minor Outlying Islands'
+, capital='[Washington DC]'
+, currency='United States dollar'
+, language='English'
+, population='300'
+, continent='[Oceania]'
+}
+Info{name='Turks and Caicos Islands'
+, capital='[Cockburn Town]'
+, currency='United States dollar'
+, language='English'
+, population='38718'
+, continent='[North America]'
+}
+Info{name='Puerto Rico'
+, capital='[San Juan]'
+, currency='United States dollar'
+, language='Spanish'
+, population='3194034'
+, continent='[North America]'
+}
+Info{name='British Virgin Islands'
+, capital='[Road Town]'
+, currency='United States dollar'
+, language='English'
+, population='30237'
+, continent='[North America]'
+}
+Info{name='Ecuador'
+, capital='[Quito]'
+, currency='United States dollar'
+, language='Spanish'
+, population='17643060'
+, continent='[South America]'
+}
+Info{name='Caribbean Netherlands'
+, capital='[Kralendijk]'
+, currency='United States dollar'
+, language='English'
+, population='25987'
+, continent='[North America]'
+}
+Info{name='Cambodia'
+, capital='[Phnom Penh]'
+, currency='Cambodian riel, United States dollar'
+, language='Khmer'
+, population='16718971'
+, continent='[Asia]'
+}
+Info{name='Guam'
+, capital='[Hagåtña]'
+, currency='United States dollar'
+, language='Spanish'
+, population='168783'
+, continent='[Oceania]'
+}
+Info{name='United States Virgin Islands'
+, capital='[Charlotte Amalie]'
+, currency='United States dollar'
+, language='English'
+, population='106290'
+, continent='[North America]'
+}
+Info{name='Timor-Leste'
+, capital='[Dili]'
+, currency='United States dollar'
+, language='Portuguese'
+, population='1318442'
+, continent='[Oceania]'
+}
+Info{name='Panama'
+, capital='[Panama City]'
+, currency='Panamanian balboa, United States dollar'
+, language='Spanish'
+, population='4314768'
+, continent='[North America]'
+}
+Info{name='Bahamas'
+, capital='[Nassau]'
+, currency='Bahamian dollar, United States dollar'
+, language='English'
+, population='393248'
+, continent='[North America]'
+}
+Info{name='Northern Mariana Islands'
+, capital='[Saipan]'
+, currency='United States dollar'
+, language='Carolinian'
+, population='57557'
+, continent='[Oceania]'
+}
+Info{name='British Indian Ocean Territory'
+, capital='[Diego Garcia]'
+, currency='United States dollar'
+, language='English'
+, population='3000'
+, continent='[Asia]'
+}
+Info{name='Marshall Islands'
+, capital='[Majuro]'
+, currency='United States dollar'
+, language='English'
+, population='59194'
+, continent='[Oceania]'
+}
+Info{name='American Samoa'
+, capital='[Pago Pago]'
+, currency='United States dollar'
+, language='English'
+, population='55197'
+, continent='[Oceania]'
+}
+Info{name='Palau'
+, capital='[Ngerulmud]'
+, currency='United States dollar'
+, language='English'
+, population='18092'
+, continent='[Oceania]'
+}
+Info{name='United States'
+, capital='[Washington, D.C.]'
+, currency='United States dollar'
+, language='English'
+, population='329484123'
+, continent='[North America]'
+}
+Info{name='El Salvador'
+, capital='[San Salvador]'
+, currency='United States dollar'
+, language='Spanish'
+, population='6486201'
+, continent='[North America]'
+}
+Info{name='Micronesia'
+, capital='[Palikir]'
+, currency='United States dollar'
+, language='English'
+, population='115021'
+, continent='[Oceania]'
+}
+]]></system-out>
+  </testcase>
+</testsuite>

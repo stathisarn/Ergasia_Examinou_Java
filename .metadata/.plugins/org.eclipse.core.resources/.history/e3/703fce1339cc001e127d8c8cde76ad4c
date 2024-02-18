@@ -1,0 +1,80 @@
+package gr_unipi.countriesApp;
+
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.GridPane;
+import model.CountriesInfo;
+import services.CountriesAPIService;
+
+import java.util.List;
+
+public class CountriesSceneCreator extends SceneCreator {
+
+    private final CountriesAPIService countriesAPIService;
+    private final TableView<CountriesInfo> countriesTableView;
+
+    public CountriesSceneCreator(double width, double height) {
+        super(width, height);
+
+        // Get an instance of CountriesAPIService using the CountriesAPI class
+        countriesAPIService = CountriesAPI.getCountriesAPIService();
+
+        // Set up the table view
+        countriesTableView = new TableView<>();
+
+        TableColumn<CountriesInfo, String> nameColumn = new TableColumn<>("Name");
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+
+        TableColumn<CountriesInfo, String> capitalColumn = new TableColumn<>("Capital");
+        capitalColumn.setCellValueFactory(new PropertyValueFactory<>("capital"));
+
+        TableColumn<CountriesInfo, String> currencyColumn = new TableColumn<>("Currency");
+        currencyColumn.setCellValueFactory(new PropertyValueFactory<>("currency"));
+
+        TableColumn<CountriesInfo, String> languageColumn = new TableColumn<>("Language");
+        languageColumn.setCellValueFactory(new PropertyValueFactory<>("language"));
+
+        TableColumn<CountriesInfo, Integer> populationColumn = new TableColumn<>("Population");
+        populationColumn.setCellValueFactory(new PropertyValueFactory<>("population"));
+
+        TableColumn<CountriesInfo, String> continentsColumn = new TableColumn<>("Continents");
+        continentsColumn.setCellValueFactory(new PropertyValueFactory<>("continents"));
+
+        countriesTableView.getColumns().addAll(nameColumn, capitalColumn, currencyColumn,
+                languageColumn, populationColumn, continentsColumn);
+
+        // Create the search button
+        Button searchButton = new Button("Search");
+        searchButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // When the search button is clicked, call the searchAllCountries() method
+                try {
+                    List<CountriesInfo> countriesList = countriesAPIService.searchAllCountries();
+                    // Update the table view with the retrieved countries list
+                    countriesTableView.getItems().addAll(countriesList);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        // Set up the layout
+        GridPane rootGridPane = new GridPane();
+        rootGridPane.add(countriesTableView, 0, 0);
+        rootGridPane.add(searchButton, 0, 1);
+
+        // Create the scene
+        setRoot(rootGridPane);
+    }
+
+    @Override
+    Scene createScene() {
+        return new Scene(getRoot(), getWidth(), getHeight());
+    }
+}

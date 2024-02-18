@@ -1,0 +1,22 @@
+INDEX VERSION 1.134+/Users/stathesarnaoutopoulos/Documents/new_java/.metadata/.plugins/org.eclipse.jdt.core
+998333926.index
+120008253.index
+2934914561.index
+3786747203.index
+1490080378.index
+1865797976.index
+3139594192.index
+3453539238.index
+2645427977.index
+43284156.index
+3648456742.index
+541147422.index
+207048636.index
+3555752115.index
+1546389053.index
+1124282382.index
+3805450609.index
+212511697.index
+3801321663.index
+1140021440.index
+3172770022.index

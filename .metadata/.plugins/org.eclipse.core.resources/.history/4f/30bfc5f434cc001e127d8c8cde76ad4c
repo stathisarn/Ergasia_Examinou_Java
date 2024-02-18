@@ -1,0 +1,43 @@
+package gr_unipi.countriesApp;
+
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.FlowPane;
+
+public class MainSceneCreator extends SceneCreator {
+
+    FlowPane rootFlowPane;
+    Button allButton, paramButton;
+    Scene scene;
+
+    public MainSceneCreator(double width, double height) {
+        super(width, height);
+        scene = this.createScene();
+
+        rootFlowPane = new FlowPane();
+        allButton = new Button("Search all countries");
+        paramButton = new Button("Search by param");
+
+        rootFlowPane.setHgap(10);
+        rootFlowPane.setAlignment(Pos.CENTER);
+        rootFlowPane.getChildren().addAll(allButton, paramButton);
+
+        allButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (scene != null) {
+                    scene.setRoot(App.countriesScene.getRoot());
+                    App.primaryStage.setTitle("All Countries");
+                }
+            }
+        });
+    }
+
+    @Override
+    Scene createScene() {
+        return new Scene(rootFlowPane, getWidth(), getHeight());
+    }
+}

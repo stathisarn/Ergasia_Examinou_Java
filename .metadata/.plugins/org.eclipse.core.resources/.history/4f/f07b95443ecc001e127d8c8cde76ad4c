@@ -1,0 +1,81 @@
+package gr_unipi.countriesApp;
+
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import model.CountriesInfo;
+import services.CountriesAPIService;
+
+import java.util.List;
+
+public class CountriesSceneCreator extends SceneCreator {
+
+    private final TableView<CountriesInfo> countriesTableView;
+
+    public CountriesSceneCreator(double width, double height) {
+        super(width, height);
+
+        // Set up the table view
+        countriesTableView = new TableView<>();
+        countriesTableView.setPrefSize(600, 400); // Set preferred size
+
+        TableColumn<CountriesInfo, String> nameColumn = new TableColumn<>("Name");
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("common"));
+
+        // Adjust the width of other columns as needed
+        TableColumn<CountriesInfo, String> capitalColumn = new TableColumn<>("Capital");
+        capitalColumn.setCellValueFactory(new PropertyValueFactory<>("capital"));
+        capitalColumn.setMinWidth(100); // Adjust the width of the column as needed
+
+        // Add other columns similarly
+
+        countriesTableView.getColumns().addAll(nameColumn, capitalColumn); // Add other columns as needed
+
+        // Create the search button
+        Button searchButton = new Button("Search");
+        searchButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    CountriesAPIService countriesAPIService = new CountriesAPIService("https://restcountries.com/");
+                    List<CountriesInfo> countriesList = countriesAPIService.searchAllCountries();
+                    countriesTableView.getItems().addAll(countriesList);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        // Create the return button
+        Button returnButton = new Button("Return");
+        returnButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // Handle the return action
+                // For example, switch back to the previous scene
+            }
+        });
+
+        // Set up the layout
+        HBox buttonBox = new HBox(10); // Horizontal box to hold buttons with spacing of 10
+        buttonBox.getChildren().addAll(searchButton, returnButton); // Add buttons to the box
+
+        GridPane rootGridPane = new GridPane();
+        rootGridPane.add(countriesTableView, 0, 0);
+        rootGridPane.add(buttonBox, 0, 1); // Add the button box to the layout
+
+        // Set the root directly in the constructor
+        setRoot(rootGridPane);
+    }
+
+    @Override
+    Scene createScene() {
+        return new Scene(getRoot(), getWidth(), getHeight());
+    }
+}

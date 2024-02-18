@@ -1,0 +1,50 @@
+package gr_unipi.countriesApp;
+
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
+
+public class MainSceneCreator extends SceneCreator {
+
+    public MainSceneCreator(double width, double height) {
+        super(width, height);
+
+        // Create buttons
+        Button searchAllButton = new Button("Search All Countries");
+        Button searchByParameterButton = new Button("Search by Parameter");
+
+        // Set up event handlers for buttons
+        searchAllButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // Handle the "Search All Countries" button click
+                // You can navigate to the CountriesScene here
+                if (App.primaryStage != null && App.countriesScene != null) {
+                    App.primaryStage.setScene(App.countriesScene);
+                    App.primaryStage.setTitle("Countries Scene");
+                }
+            }
+        });
+
+        searchByParameterButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // Handle the "Search by Parameter" button click
+                // You can navigate to the SearchByParameterScene here
+                if (App.primaryStage != null && App.searchByParameterScene != null) {
+                    App.primaryStage.setScene(App.searchByParameterScene);
+                    App.primaryStage.setTitle("Search By Parameter Scene");
+                }
+            }
+        });
+
+        // Set up the layout
+        VBox layout = new VBox(10);
+        layout.getChildren().addAll(searchAllButton, searchByParameterButton);
+        layout.setPrefSize(width, height);
+
+       
+    }
+}

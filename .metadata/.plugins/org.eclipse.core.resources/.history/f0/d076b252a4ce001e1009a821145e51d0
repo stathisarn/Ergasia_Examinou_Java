@@ -1,0 +1,518 @@
+package gr_unipi.countriesApp;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import model.CountriesInfo;
+import services.CountriesAPIService;
+import javafx.scene.control.ButtonBar;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import model.CountriesAPI;;
+
+public class SearchByParameterSceneCreator extends SceneCreator {
+
+	private final TableView<CountriesInfo> countriesTableView;
+	private final GridPane rootGridPane;
+	private final ObservableList<SearchHistoryItem> searchHistoryList;
+	private final TableView<SearchHistoryItem> searchHistoryTableView;
+
+	public SearchByParameterSceneCreator(double width, double height) {
+		super(width, height);
+
+		// Set up the table view
+		countriesTableView = new TableView<>();
+		countriesTableView.setPrefSize(1050, 900); // Set preferred size
+
+		// Create search history table
+		searchHistoryList = FXCollections.observableArrayList();
+		searchHistoryTableView = new TableView<>();
+		TableColumn<SearchHistoryItem, String> queryColumn = new TableColumn<>("Search Query");
+		queryColumn.setCellValueFactory(new PropertyValueFactory<>("query"));
+
+		TableColumn<SearchHistoryItem, String> typeColumn = new TableColumn<>("Search Type");
+		typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+
+		searchHistoryTableView.getColumns().addAll(queryColumn, typeColumn);
+		searchHistoryTableView.setItems(searchHistoryList);
+
+		// Add search history table to layout
+		rootGridPane = new GridPane();
+		rootGridPane.add(countriesTableView, 0, 0);
+		rootGridPane.add(searchHistoryTableView, 1, 0);
+
+		searchHistoryTableView.setOnMouseClicked(event -> {
+			if (event.getClickCount() == 2) {
+				SearchHistoryItem selectedItem = searchHistoryTableView.getSelectionModel().getSelectedItem();
+				if (selectedItem != null) {
+					String query = selectedItem.getQuery();
+					String type = selectedItem.getType();
+					// Perform search based on query and type
+					performSearch(query, type);
+				}
+			}
+		});
+
+		// Define TableColumn objects
+		TableColumn<CountriesInfo, String> nameColumn = new TableColumn<>("Name");
+		TableColumn<CountriesInfo, List<String>> capitalColumn = new TableColumn<>("Capital");
+		TableColumn<CountriesInfo, String> currencyColumn = new TableColumn<>("Currency");
+		TableColumn<CountriesInfo, String> languageColumn = new TableColumn<>("Language");
+		TableColumn<CountriesInfo, Integer> populationColumn = new TableColumn<>("Population");
+		TableColumn<CountriesInfo, List<String>> continentsColumn = new TableColumn<>("Continents");
+
+		// Associate TableColumn objects with property values from CountriesInfo class
+		nameColumn.setCellValueFactory(new PropertyValueFactory<>("common"));
+		capitalColumn.setCellValueFactory(new PropertyValueFactory<>("capital"));
+		currencyColumn.setCellValueFactory(new PropertyValueFactory<>("currency"));
+		languageColumn.setCellValueFactory(new PropertyValueFactory<>("language"));
+		populationColumn.setCellValueFactory(new PropertyValueFactory<>("population"));
+		continentsColumn.setCellValueFactory(new PropertyValueFactory<>("continent"));
+
+		// Add TableColumn objects to the TableView
+		countriesTableView.getColumns().addAll(nameColumn, capitalColumn, currencyColumn, languageColumn,
+				populationColumn, continentsColumn);
+
+		// Create the search buttons
+		Button searchByCountryButton = new Button("Search By Country");
+		searchByCountryButton.setOnAction(event -> searchByCountry());
+
+		Button searchByLangButton = new Button("Search By Language");
+		searchByLangButton.setOnAction(event -> searchByLanguage());
+
+		Button searchByCurrencyButton = new Button("Search By Currency");
+		searchByCurrencyButton.setOnAction(event -> searchByCurrency());
+
+		// Create the return button
+		Button returnButton = new Button("Return");
+		returnButton.setOnAction(event -> {
+			if (App.primaryStage != null && App.mainScene != null) {
+				App.primaryStage.setScene(App.mainScene);
+				App.primaryStage.setTitle("MainFX Window");
+			}
+		});
+
+		// Set up the layout
+		HBox buttonBox = new HBox(10); // Horizontal box to hold buttons with spacing of 10
+		buttonBox.getChildren().addAll(searchByCountryButton, searchByLangButton, searchByCurrencyButton, returnButton); 
+
+		// Set up the layout
+		rootGridPane.add(buttonBox, 0, 1); // Add the HBox containing buttons instead of individual buttons
+	}
+
+	private void updateSearchHistory(String query, String type) {
+	    // Check if the search history already contains the item
+	    boolean containsItem = searchHistoryList.stream()
+	            .anyMatch(item -> item.getQuery().equals(query) && item.getType().equals(type));
+	    
+	    // If the item is not already in the search history, add it
+	    if (!containsItem) {
+	        SearchHistoryItem searchItem = new SearchHistoryItem(query, type);
+	        searchHistoryList.add(searchItem);
+
+	        // Remove the oldest search item if the list size exceeds five
+	        if (searchHistoryList.size() > 5) {
+	            searchHistoryList.remove(0);
+	        }
+	    }
+	}
+
+
+	private void performSearch(String query, String type) {
+	    // Perform search based on query and type
+	    try {
+	        switch (type) {
+	            case "Country":
+	                List<CountriesInfo> countryResult = countriesAPIService.searchCountriesByName(query);
+	                if (!countryResult.isEmpty()) {
+	                    countriesTableView.getItems().setAll(countryResult);
+	                    updateSearchHistory(query, type);
+	                } else {
+	                    showAlert("No Results", "No countries found for the given query.");
+	                }
+	                break;
+	            case "Language":
+	                List<CountriesInfo> languageResult = countriesAPIService.searchCountriesByLanguage(query);
+	                if (!languageResult.isEmpty()) {
+	                    countriesTableView.getItems().setAll(languageResult);
+	                    updateSearchHistory(query, type);
+	                } else {
+	                    showAlert("No Results", "No countries found for the given language.");
+	                }
+	                break;
+	            case "Currency":
+	                // Retrieve all countries
+	                List<CountriesInfo> allCountries = countriesAPIService.searchAllCountries();
+	                
+	                // Retrieve the selected currency from the search history
+	                String selectedCurrency = getLastSearchHistoryOfType("Currency");
+	                
+	                // Filter countries based on the selected currency
+	                List<CountriesInfo> currencyResult = allCountries.stream()
+	                        .filter(country -> country.getCurrency().contains(selectedCurrency))
+	                        .collect(Collectors.toList());
+	                
+	                if (!currencyResult.isEmpty()) {
+	                    countriesTableView.getItems().setAll(currencyResult);
+	                    updateSearchHistory(selectedCurrency, type);
+	                } else {
+	                    showAlert("No Results", "No countries found for the given currency.");
+	                }
+	                break;
+	            default:
+	                showAlert("Error", "Invalid search type", "Please select a valid type of search.");
+	        }
+	    } catch (Exception e) {
+	        showAlert("Error", "An error occurred while performing the search.", e.getMessage());
+	    }
+	}
+	
+	private String getLastSearchHistoryOfType(String type) {
+	    // Iterate through the search history list in reverse order
+	    for (int i = searchHistoryList.size() - 1; i >= 0; i--) {
+	        SearchHistoryItem item = searchHistoryList.get(i);
+	        if (item.getType().equals(type)) {
+	            return item.getQuery(); // Return the query of the first matching type found
+	        }
+	    }
+	    return null; // Return null if no entry of the specified type is found in the search history
+	}
+
+
+
+	private void searchByCountry() {
+		try {
+			// Retrieve the list of all country names
+			List<String> countryNames = getAllCountryNames();
+			countryNames.sort(Comparator.naturalOrder());
+
+			// Create a dialog to select countries
+			Dialog<String> dialog = new Dialog<>();
+			dialog.setTitle("Select Country");
+			dialog.setHeaderText("Select a country to search by");
+
+			// Create a filter text field
+			TextField filterField = new TextField();
+			filterField.setPromptText("Search country...");
+
+			// Create a ListView to display country names
+			ListView<String> countryListView = new ListView<>(FXCollections.observableArrayList(countryNames));
+			countryListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+			// Bind the text field to filter the country list
+			filterField.textProperty().addListener((observable, oldValue, newValue) -> {
+				countryListView.getItems()
+						.setAll(countryNames.stream()
+								.filter(country -> country.toLowerCase().contains(newValue.toLowerCase()))
+								.collect(Collectors.toList()));
+			});
+
+			// Set the dialog content
+			VBox dialogContent = new VBox(10); // Vertical spacing between nodes
+			dialogContent.getChildren().addAll(filterField, countryListView);
+			dialog.getDialogPane().setContent(dialogContent);
+
+			// Set the dialog buttons
+			ButtonType okButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+			ButtonType cancelButtonType = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+			dialog.getDialogPane().getButtonTypes().addAll(okButtonType, cancelButtonType);
+
+			// Set the dialog result converter
+			dialog.setResultConverter(dialogButton -> {
+				if (dialogButton == okButtonType) {
+					return countryListView.getSelectionModel().getSelectedItem();
+				}
+				return null;
+			});
+
+			// Show the dialog box and wait for user input
+			Optional<String> result = dialog.showAndWait();
+
+			// Perform the search if a country is selected
+			result.ifPresent(countryName -> {
+				try {
+					// Call the appropriate method from the CountriesAPIService class for searching
+					// by country name
+					CountriesAPIService countriesAPIService = new CountriesAPIService("https://restcountries.com/");
+					List<CountriesInfo> countriesList = countriesAPIService.searchCountriesByName(countryName);
+					if (!countriesList.isEmpty()) {
+						// Clear previous search results
+						countriesTableView.getItems().clear();
+						// Add the selected country's information to the table view
+						countriesTableView.getItems().addAll(countriesList);
+						// Update search history
+						updateSearchHistory(countryName, "Country");
+					} else {
+						showAlert("Country Not Found", "Country information not found.");
+					}
+				} catch (Exception e) {
+					showAlert("Error", "An error occurred while searching for countries by name.", e.getMessage());
+				}
+			});
+
+		} catch (Exception e) {
+			showAlert("Error", "An error occurred while searching for countries by name.", e.getMessage());
+		}
+	}
+
+	private void searchByLanguage() {
+		try {
+			// Retrieve the list of all languages
+			List<String> allLanguages = getAllLanguages();
+			allLanguages.sort(Comparator.naturalOrder());
+
+			// Create a dialog to select languages
+			Dialog<String> dialog = new Dialog<>();
+			dialog.setTitle("Select Language");
+			dialog.setHeaderText("Select a language to search by");
+
+			// Create a filter text field
+			TextField filterField = new TextField();
+			filterField.setPromptText("Search language...");
+
+			// Create a ListView to display languages
+			ListView<String> languageListView = new ListView<>(FXCollections.observableArrayList(allLanguages));
+			languageListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+			// Bind the text field to filter the language list
+			filterField.textProperty().addListener((observable, oldValue, newValue) -> {
+				languageListView.getItems()
+						.setAll(allLanguages.stream()
+								.filter(language -> language.toLowerCase().contains(newValue.toLowerCase()))
+								.collect(Collectors.toList()));
+			});
+
+			// Set the dialog content
+			VBox dialogContent = new VBox(10); // Vertical spacing between nodes
+			dialogContent.getChildren().addAll(filterField, languageListView);
+			dialog.getDialogPane().setContent(dialogContent);
+
+			// Set the dialog buttons
+			ButtonType okButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+			ButtonType cancelButtonType = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+			dialog.getDialogPane().getButtonTypes().addAll(okButtonType, cancelButtonType);
+
+			// Set the dialog result converter
+			dialog.setResultConverter(dialogButton -> {
+				if (dialogButton == okButtonType) {
+					return languageListView.getSelectionModel().getSelectedItem();
+				}
+				return null;
+			});
+
+			// Show the dialog box and wait for user input
+			Optional<String> result = dialog.showAndWait();
+
+			// Perform the search if a language is selected
+			result.ifPresent(language -> {
+				try {
+					// Call the appropriate method from the CountriesAPIService class for searching
+					// by language
+					CountriesAPIService countriesAPIService = new CountriesAPIService("https://restcountries.com/");
+					List<CountriesInfo> countriesList = countriesAPIService.searchCountriesByLanguage(language);
+					if (!countriesList.isEmpty()) {
+						// Clear previous search results
+						countriesTableView.getItems().clear();
+						// Add the selected countries' information to the table view
+						countriesTableView.getItems().addAll(countriesList);
+						// Update search history
+						updateSearchHistory(language, "Language");
+					} else {
+						showAlert("Language Not Found", "No countries found for the selected language.");
+					}
+				} catch (Exception e) {
+					showAlert("Error", "An error occurred while searching for countries by language.", e.getMessage());
+				}
+			});
+		} catch (Exception e) {
+			showAlert("Error", "An error occurred while retrieving languages.", e.getMessage());
+		}
+	}
+
+	private void searchByCurrency() {
+		try {
+			// Retrieve the list of all currencies
+			List<String> allCurrencies = getAllCurrencyCodes();
+			allCurrencies.sort(Comparator.naturalOrder());
+
+			// Create a dialog to select currency
+			Dialog<String> dialog = new Dialog<>();
+			dialog.setTitle("Select Currency");
+			dialog.setHeaderText("Select a Currency to search by");
+
+			// Create a filter text field
+			TextField filterField = new TextField();
+			filterField.setPromptText("Search Currency...");
+
+			// Create a ListView to display currencies
+			ListView<String> currencyListView = new ListView<>(FXCollections.observableArrayList(allCurrencies));
+			currencyListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+			// Bind the text field to filter the currency list
+			filterField.textProperty().addListener((observable, oldValue, newValue) -> {
+				currencyListView.getItems()
+						.setAll(allCurrencies.stream()
+								.filter(currency -> currency.toLowerCase().contains(newValue.toLowerCase()))
+								.collect(Collectors.toList()));
+			});
+
+			// Set the dialog content
+			VBox dialogContent = new VBox(10); // Vertical spacing between nodes
+			dialogContent.getChildren().addAll(filterField, currencyListView);
+			dialog.getDialogPane().setContent(dialogContent);
+
+			// Set the dialog buttons
+			ButtonType okButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+			ButtonType cancelButtonType = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+			dialog.getDialogPane().getButtonTypes().addAll(okButtonType, cancelButtonType);
+
+			// Set the dialog result converter
+			dialog.setResultConverter(dialogButton -> {
+				if (dialogButton == okButtonType) {
+					return currencyListView.getSelectionModel().getSelectedItem();
+				}
+				return null;
+			});
+
+			// Show the dialog box and wait for user input
+			Optional<String> result = dialog.showAndWait();
+
+			// Perform the search if a currency is selected
+			result.ifPresent(selectedCurrency -> {
+				try {
+					// Call the appropriate method from the CountriesAPIService class to retrieve
+					// all countries info
+					CountriesAPIService countriesAPIService = new CountriesAPIService("https://restcountries.com/");
+					List<CountriesInfo> allCountries = countriesAPIService.searchAllCountries();
+
+					// Filter countries based on the selected currency
+					List<CountriesInfo> countriesList = allCountries.stream()
+							.filter(country -> country.getCurrency().contains(selectedCurrency))
+							.collect(Collectors.toList());
+
+					if (!countriesList.isEmpty()) {
+						countriesTableView.getItems().clear();
+						countriesTableView.getItems().addAll(countriesList);
+						// Update search history
+						updateSearchHistory(selectedCurrency, "Currency");
+					} else {
+						showAlert("No Countries Found", "No countries found for the selected currency.");
+					}
+				} catch (Exception e) {
+					showAlert("Error", "An error occurred while searching for countries by currency.", e.getMessage());
+				}
+			});
+		} catch (Exception e) {
+			showAlert("Error", "An error occurred while retrieving currency codes.", e.getMessage());
+		}
+	}
+
+	private List<String> getAllLanguages() {
+		try {
+			// Call the appropriate method from the CountriesAPIService class to retrieve
+			// all country names
+			CountriesAPIService countriesAPIService = new CountriesAPIService("https://restcountries.com/");
+			List<CountriesInfo> countriesList = countriesAPIService.searchAllCountries();
+
+			// Create a set to store unique languages
+			Set<String> languagesSet = new HashSet<>();
+
+			// Iterate through each country and add all its languages to the set
+			for (CountriesInfo country : countriesList) {
+				// Split the languages by comma and add each language to the set
+				String[] languages = country.getLanguage().split(",");
+				for (String language : languages) {
+					languagesSet.add(language.trim()); // Trim to remove leading/trailing spaces
+				}
+			}
+
+			// Convert the set back to a list
+			return new ArrayList<>(languagesSet);
+		} catch (Exception e) {
+			showAlert("Error", "An error occurred while retrieving languages.", e.getMessage());
+			return new ArrayList<>();
+		}
+	}
+
+	private List<String> getAllCurrencyCodes() {
+		try {
+			// Call the appropriate method from the CountriesAPIService class to retrieve
+			// all countries info
+			CountriesAPIService countriesAPIService = new CountriesAPIService("https://restcountries.com/");
+			List<CountriesInfo> countriesList = countriesAPIService.searchAllCountries();
+
+			// Create a set to store unique currency codes
+			Set<String> currencyCodeSet = new HashSet<>();
+
+			// Iterate through each country and extract currency codes from their currency
+			// strings
+			for (CountriesInfo country : countriesList) {
+				// Split the currencies by comma
+				String[] currencies = country.getCurrency().split(",");
+				for (String currency : currencies) {
+					// Extract the currency code by removing parentheses and whitespace
+					String currencyCode = currency.replaceAll("[()]", "").trim();
+					currencyCodeSet.add(currencyCode);
+				}
+			}
+
+			// Convert the set back to a list
+			return new ArrayList<>(currencyCodeSet);
+		} catch (Exception e) {
+			showAlert("Error", "An error occurred while retrieving currency codes.", e.getMessage());
+			return new ArrayList<>();
+		}
+	}
+
+	private List<String> getAllCountryNames() {
+		try {
+			// Call the appropriate method from the CountriesAPIService class to retrieve
+			// all country names
+			CountriesAPIService countriesAPIService = new CountriesAPIService("https://restcountries.com/");
+			List<CountriesInfo> countriesList = countriesAPIService.searchAllCountries();
+			List<String> countryNames = new ArrayList<>();
+			for (CountriesInfo country : countriesList) {
+				countryNames.add(country.getCommon());
+			}
+			return countryNames;
+		} catch (Exception e) {
+			showAlert("Error", "An error occurred while retrieving country names.", e.getMessage());
+			return new ArrayList<>();
+		}
+	}
+
+	private void showAlert(String title, String content) {
+		showAlert(title, null, content);
+	}
+
+	private void showAlert(String title, String header, String content) {
+		Alert alert = new Alert(Alert.AlertType.ERROR);
+		alert.setTitle(title);
+		alert.setHeaderText(header);
+		alert.setContentText(content);
+		alert.showAndWait();
+	}
+
+	@Override
+	Scene createScene() {
+		return new Scene(rootGridPane, 1600, 1000);
+	}
+}

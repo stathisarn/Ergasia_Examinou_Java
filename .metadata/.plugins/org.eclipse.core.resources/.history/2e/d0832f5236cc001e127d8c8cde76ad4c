@@ -1,0 +1,39 @@
+package gr_unipi.countriesApp;
+
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.FlowPane;
+
+public class MainSceneCreator extends SceneCreator {
+
+    Button goToCountriesButton;
+
+    public MainSceneCreator(double width, double height) {
+        super(width, height);
+
+        FlowPane rootFlowPane = new FlowPane();
+        rootFlowPane.setPrefSize(width, height);
+        rootFlowPane.setAlignment(Pos.CENTER);
+
+        goToCountriesButton = new Button("Go to Countries");
+        goToCountriesButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (App.primaryStage != null && App.countriesScene != null) {
+                    App.primaryStage.setScene(App.countriesScene);
+                    App.primaryStage.setTitle("Countries Scene");
+                }
+            }
+        });
+
+        rootFlowPane.getChildren().add(goToCountriesButton);
+    }
+
+    @Override
+    Scene createScene() {
+        return new Scene(new FlowPane(), width, height);
+    }
+}

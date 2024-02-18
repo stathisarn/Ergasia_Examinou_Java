@@ -1,0 +1,7 @@
+package gr_unipi.countriesApp;
+
+public enum SearchType {
+    COUNTRY,
+    LANGUAGE,
+    CURRENCY
+}

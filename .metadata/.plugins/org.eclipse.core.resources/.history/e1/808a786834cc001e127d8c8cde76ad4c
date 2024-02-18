@@ -1,0 +1,36 @@
+// App.java
+package gr_unipi.countriesApp;
+
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+public class App extends Application {
+
+    // Stage
+    Stage primaryStage;
+
+    // Scenes
+    Scene mainScene, countriesScene;
+
+    // FlowPane
+
+    @Override
+    public void start(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+
+        SceneCreator mainSceneCreator = new MainSceneCreator(650, 300, primaryStage);
+        mainScene = mainSceneCreator.createScene();
+
+        SceneCreator countriesSceneCreator = new CountriesSceneCreator(650, 300);
+        countriesScene = countriesSceneCreator.createScene();
+
+        primaryStage.setTitle("MainFX Window");
+        primaryStage.setScene(mainScene);
+        primaryStage.show();
+    }
+
+    public static void main(String[] args) {
+        launch();
+    }
+}

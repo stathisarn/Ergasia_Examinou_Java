@@ -1,0 +1,33 @@
+package gr_unipi.countriesApp;
+
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+public class App extends Application {
+
+    static Stage primaryStage;
+    static Scene mainScene, countriesScene;
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+    @Override
+    public void start(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+
+        // Create the main scene
+        MainSceneCreator mainSceneCreator = new MainSceneCreator(400, 300);
+        mainScene = mainSceneCreator.createScene();
+
+        // Create the secondary scene
+        CountriesSceneCreator countriesSceneCreator = new CountriesSceneCreator(400, 300);
+        countriesScene = countriesSceneCreator.createScene();
+
+        // Set the primary stage
+        primaryStage.setTitle("MainFX Window");
+        primaryStage.setScene(mainScene);
+        primaryStage.show();
+    }
+}

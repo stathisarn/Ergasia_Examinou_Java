@@ -1,0 +1,103 @@
+package gr_unipi.countriesApp;
+
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.HPos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import model.CountriesInfo;
+import services.CountriesAPIService;
+
+import java.util.List;
+
+public class CountriesSceneCreator extends SceneCreator {
+
+    private final TableView<CountriesInfo> countriesTableView;
+    private final GridPane rootGridPane;
+
+    public CountriesSceneCreator(double width, double height) {
+        super(width, height);
+
+        // Set up the table view
+        countriesTableView = new TableView<>();
+        countriesTableView.setPrefSize(1050, 900); // Set preferred size
+
+        TableColumn<CountriesInfo, String> nameColumn = new TableColumn<>("Name");
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("common"));
+
+        TableColumn<CountriesInfo, String> capitalColumn = new TableColumn<>("Capital");
+        capitalColumn.setCellValueFactory(new PropertyValueFactory<>("capital"));
+
+        TableColumn<CountriesInfo, String> currencyColumn = new TableColumn<>("Currency");
+        currencyColumn.setCellValueFactory(new PropertyValueFactory<>("currency"));
+
+        TableColumn<CountriesInfo, String> languageColumn = new TableColumn<>("Language");
+        languageColumn.setCellValueFactory(new PropertyValueFactory<>("language"));
+
+        TableColumn<CountriesInfo, Integer> populationColumn = new TableColumn<>("Population");
+        populationColumn.setCellValueFactory(new PropertyValueFactory<>("population"));
+
+        TableColumn<CountriesInfo, String> continentsColumn = new TableColumn<>("Continents");
+        continentsColumn.setCellValueFactory(new PropertyValueFactory<>("continent"));
+
+        countriesTableView.getColumns().addAll(nameColumn, capitalColumn, currencyColumn,
+                languageColumn, populationColumn, continentsColumn);
+
+        // Create the search button
+        Button searchButton = new Button("Search");
+        searchButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    // Call the searchAllCountries() method directly from CountriesAPIService
+                    CountriesAPIService countriesAPIService = new CountriesAPIService("https://restcountries.com/");
+                    List<CountriesInfo> countriesList = countriesAPIService.searchAllCountries();
+                    countriesTableView.getItems().addAll(countriesList);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        // Create the return button
+        Button returnButton = new Button("Return");
+        returnButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // Handle the return button action
+                // You can navigate back to the main scene here
+            }
+        });
+        
+     // Set up the layout
+        HBox buttonBox = new HBox(10); // Horizontal box to hold buttons with spacing of 10
+        buttonBox.getChildren().addAll(searchButton, returnButton); // Add buttons to the box
+
+        GridPane rootGridPane = new GridPane();
+        rootGridPane.add(countriesTableView, 0, 0);
+        rootGridPane.add(buttonBox, 0, 1); // Add the button box to the layout
+
+        // Set the alignment of the button box within the grid pane
+        GridPane.setHalignment(buttonBox, HPos.CENTER); // Center the button box horizontally
+
+        // Set the root directly in the constructor
+        setRoot(rootGridPane);
+
+
+        // Set up the layout
+        rootGridPane = new GridPane();
+        rootGridPane.add(countriesTableView, 0, 0);
+        rootGridPane.add(searchButton, 0, 1);
+        rootGridPane.add(returnButton, 1, 1);
+    }
+
+    @Override
+    Scene createScene() {
+        return new Scene(rootGridPane, width, height);
+    }
+}

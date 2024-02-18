@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="javafx.scene.layout.GridPane"/>
+    <fullyQualifiedTypeName name="javafx.scene.control.Button"/>
+    <fullyQualifiedTypeName name="javafx.scene.control.Label"/>
+    <fullyQualifiedTypeName name="javafx.scene.control.TableView"/>
+    <fullyQualifiedTypeName name="javafx.scene.layout.FlowPane"/>
+    <fullyQualifiedTypeName name="javafx.scene.layout.HBox"/>
+    <fullyQualifiedTypeName name="javafx.geometry.HPos"/>
+    <fullyQualifiedTypeName name="javafx.scene.control.TableColumn"/>
+    <fullyQualifiedTypeName name="javafx.scene.control.cell.PropertyValueFactory"/>
+    <fullyQualifiedTypeName name="java.util.Set"/>
+    <fullyQualifiedTypeName name="java.util.HashSet"/>
+    <fullyQualifiedTypeName name="javafx.scene.control.TextField"/>
+    <fullyQualifiedTypeName name="javafx.scene.control.Dialog"/>
+    <fullyQualifiedTypeName name="javafx.collections.FXCollections"/>
+    <fullyQualifiedTypeName name="javafx.scene.control.ListView"/>
+    <fullyQualifiedTypeName name="java.util.stream.Collectors"/>
+    <fullyQualifiedTypeName name="javafx.scene.control.ButtonType"/>
+    <fullyQualifiedTypeName name="javafx.scene.control.SelectionMode"/>
+    <fullyQualifiedTypeName name="javafx.scene.control.Alert"/>
+    <fullyQualifiedTypeName name="exception.CountriesAPIException"/>
+    <fullyQualifiedTypeName name="javafx.scene.Scene"/>
+    <fullyQualifiedTypeName name="java.util.regex.Pattern"/>
+    <fullyQualifiedTypeName name="java.util.regex.Matcher"/>
+    <fullyQualifiedTypeName name="services.CountriesAPIService"/>
+    <fullyQualifiedTypeName name="model.CountriesInfo"/>
+    <fullyQualifiedTypeName name="java.util.Map"/>
+    <fullyQualifiedTypeName name="java.util.LinkedHashMap"/>
+    <fullyQualifiedTypeName name="java.util.Comparator"/>
+    <fullyQualifiedTypeName name="model.CountriesAPI"/>
+</qualifiedTypeNameHistroy>

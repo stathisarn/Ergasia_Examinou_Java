@@ -1,0 +1,58 @@
+package gr_unipi.countriesApp;
+
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.FlowPane;
+
+public class MainSceneCreator extends SceneCreator {
+
+    FlowPane rootFlowPane;
+    Button allButton, paramButton;
+
+    public MainSceneCreator(double width, double height) {
+        super(width, height);
+
+        rootFlowPane = new FlowPane();
+        allButton = new Button("Search all countries");
+        paramButton = new Button("Search by parameter");
+
+        rootFlowPane.setHgap(10);
+        rootFlowPane.setAlignment(Pos.CENTER);
+        rootFlowPane.getChildren().addAll(allButton, paramButton);
+
+        allButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("Search all countries button clicked");
+                // Create and set countries scene
+                SceneCreator countriesSceneCreator = new CountriesSceneCreator(650, 300);
+                App.countriesScene = countriesSceneCreator.createScene();
+                if (App.primaryStage != null && App.countriesScene != null) {
+                    App.primaryStage.setScene(App.countriesScene);
+                    App.primaryStage.setTitle("All Countries");
+                }
+            }
+        });
+        
+        public void handle(ActionEvent event) {
+            System.out.println("Search all countries button clicked");
+            // Create and set countries scene
+            SceneCreator countriesSceneCreator = new CountriesSceneCreator(650, 300);
+            App.countriesScene = countriesSceneCreator.createScene();
+            if (App.primaryStage != null && App.countriesScene != null) {
+                App.primaryStage.setScene(App.countriesScene);
+                App.primaryStage.setTitle("All Countries");
+            }
+        }
+    });
+
+    }
+
+    @Override
+    Scene createScene() {
+        return new Scene(rootFlowPane, width, height);
+    }
+}
